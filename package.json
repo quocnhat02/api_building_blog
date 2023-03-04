@@ -1,0 +1,26 @@
+{
+  "name": "api_building_blog",
+  "version": "1.0.0",
+  "description": "Back-end Blog",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/quocnhat02/api_building_blog.git"
+  },
+  "keywords": [],
+  "author": "Nhat Nguyen",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/quocnhat02/api_building_blog/issues"
+  },
+  "homepage": "https://github.com/quocnhat02/api_building_blog#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.21"
+  }
+}
