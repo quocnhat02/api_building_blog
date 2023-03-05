@@ -3,11 +3,15 @@ const categoryRouter = require('./routes/categories/categoryRoutes');
 const commentRouter = require('./routes/comments/commentRoutes');
 const postRouter = require('./routes/posts/postRoutes');
 const userRouter = require('./routes/users/userRoutes');
+
 require('dotenv').config();
 require('./config/dbConnect');
+
 const app = express();
 
 // middleware
+app.use(express.json()); // passing incoming payload
+app.use(express.urlencoded({ extended: true }));
 
 const userAuth = {
   isLogin: true,
