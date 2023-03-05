@@ -9,18 +9,30 @@ const app = express();
 
 // middleware
 
+const userAuth = {
+  isLogin: true,
+  isAdmin: false,
+};
+
+app.use((req, res, next) => {
+  if (userAuth.isLogin) {
+    next();
+  } else {
+    return res.json({
+      msg: 'Invalid login Credentials',
+    });
+  }
+});
+
 // -------
 // routes
 
 // users route
 app.use('/api/v1/users/', userRouter);
-
 // posts route
 app.use('/api/v1/posts/', postRouter);
-
 // comments route
 app.use('/api/v1/comments/', commentRouter);
-
 // categories route
 app.use('/api/v1/categories/', categoryRouter);
 // -------
