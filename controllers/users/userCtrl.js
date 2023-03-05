@@ -41,22 +41,28 @@ const userLoginCtrl = async (req, res) => {
   try {
     // Check if email exist
     const userFound = await User.findOne({ email });
+
     if (!userFound) {
       return res.json({
-        msg: 'Wrong login Credentials',
+        msg: 'Invalid login Credentials',
       });
     }
-    // validity of the password
-    const isPasswordMatched = await User.findOne({ password });
+
+    // verify password
+    const isPasswordMatched = await bcrypt.compare(
+      password,
+      userFound.password
+    );
+
     if (!isPasswordMatched) {
       return res.json({
-        msg: 'Wrong login Credentials',
+        msg: 'Invalid login Credentials',
       });
     }
 
     res.json({
       status: 'success',
-      data: 'user login',
+      data: userFound,
     });
   } catch (error) {
     res.json(error.message);
