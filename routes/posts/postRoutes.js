@@ -1,65 +1,27 @@
 const express = require('express');
+const {
+  createPostCtrl,
+  getPostCtrl,
+  getPostsCtrl,
+  deletePostCtrl,
+  updatePostCtrl,
+} = require('../../controllers/posts/postCtrl');
 
 const postRouter = express.Router();
 
 // POST/api/v1/posts
-postRouter.post('/', async (req, res) => {
-  try {
-    res.json({
-      status: 'success',
-      data: 'post created',
-    });
-  } catch (error) {
-    res.json(error.message);
-  }
-});
+postRouter.post('/', createPostCtrl);
 
 // GET/api/v1/posts/:id
-postRouter.get('/:id', async (req, res) => {
-  try {
-    res.json({
-      status: 'success',
-      data: 'Post route',
-    });
-  } catch (error) {
-    res.json(error.message);
-  }
-});
+postRouter.get('/:id', getPostCtrl);
 
 // GET/api/v1/posts
-postRouter.get('/', async (req, res) => {
-  try {
-    res.json({
-      status: 'success',
-      data: 'Posts route',
-    });
-  } catch (error) {
-    res.json(error.message);
-  }
-});
+postRouter.get('/', getPostsCtrl);
 
 // DELETE/api/v1/posts/:id
-postRouter.delete('/:id', async (req, res) => {
-  try {
-    res.json({
-      status: 'success',
-      data: 'delete post route',
-    });
-  } catch (error) {
-    res.json(error.message);
-  }
-});
+postRouter.delete('/:id', deletePostCtrl);
 
 // PUT/api/v1/posts/:id
-postRouter.put('/:id', async (req, res) => {
-  try {
-    res.json({
-      status: 'success',
-      data: 'update post route',
-    });
-  } catch (error) {
-    res.json(error.message);
-  }
-});
+postRouter.put('/:id', updatePostCtrl);
 
 module.exports = postRouter;

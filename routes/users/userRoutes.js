@@ -2,7 +2,7 @@ const express = require('express');
 const {
   userRegisterCtrl,
   userLoginCtrl,
-  usersCtrl,
+  getUsersCtrl,
   userProfileCtrl,
   deleteUserCtrl,
   updateUserCtrl,
@@ -20,7 +20,7 @@ userRouter.post('/login', userLoginCtrl);
 userRouter.get('/profile/:id', userProfileCtrl);
 
 // GET/api/v1/users
-userRouter.get('/', usersCtrl);
+userRouter.get('/', getUsersCtrl);
 
 // DELETE/api/v1/users/:id
 userRouter.delete('/:id', deleteUserCtrl);

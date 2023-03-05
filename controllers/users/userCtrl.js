@@ -35,7 +35,7 @@ const userProfileCtrl = async (req, res) => {
 };
 
 // All
-const usersCtrl = async (req, res) => {
+const getUsersCtrl = async (req, res) => {
   try {
     res.json({
       status: 'success',
@@ -73,7 +73,7 @@ module.exports = {
   userRegisterCtrl,
   userLoginCtrl,
   userProfileCtrl,
-  usersCtrl,
+  getUsersCtrl,
   deleteUserCtrl,
   updateUserCtrl,
 };
