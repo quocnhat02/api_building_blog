@@ -34,7 +34,23 @@ const userRegisterCtrl = async (req, res) => {
 
 // Login
 const userLoginCtrl = async (req, res) => {
+  const { email, password } = req.body;
   try {
+    // Check if email exist
+    const userFound = await User.findOne({ email });
+    if (!userFound) {
+      return res.json({
+        msg: 'Wrong login Credentials',
+      });
+    }
+    // validity of the password
+    const isPasswordMatched = await User.findOne({ password });
+    if (!isPasswordMatched) {
+      return res.json({
+        msg: 'Wrong login Credentials',
+      });
+    }
+
     res.json({
       status: 'success',
       data: 'user login',
