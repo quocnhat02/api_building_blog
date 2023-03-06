@@ -1,4 +1,5 @@
 const express = require('express');
+const storage = require('../../config/cloudinary');
 const {
   userRegisterCtrl,
   userLoginCtrl,
@@ -6,10 +7,15 @@ const {
   userProfileCtrl,
   deleteUserCtrl,
   updateUserCtrl,
+  profilePhotoUploadCtrl,
 } = require('../../controllers/users/userCtrl');
 const isLogin = require('../../middlewares/isLogin');
+const multer = require('multer');
 
 const userRouter = express.Router();
+
+// instance of multer
+const upload = multer({ storage });
 
 // POST/api/v1/users/register
 userRouter.post('/register', userRegisterCtrl);
@@ -28,5 +34,12 @@ userRouter.delete('/:id', deleteUserCtrl);
 
 // PUT/api/v1/users/:id
 userRouter.put('/:id', updateUserCtrl);
+
+// POST/api/v1/users/profile-photo-upload
+userRouter.post(
+  '/profile-photo-upload',
+  upload.single('profile'),
+  profilePhotoUploadCtrl
+);
 
 module.exports = userRouter;
