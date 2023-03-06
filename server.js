@@ -42,6 +42,18 @@ app.use('/api/v1/categories/', categoryRouter);
 // -------
 
 // Error handlers middleware
+app.use((err, req, res, next) => {
+  // status
+  // message
+  // stack
+  const stack = err.stack;
+  const message = err.message;
+  const status = err.status ? err.status : 'failed';
+  const statusCode = err?.statusCode ? err.statusCode : 500;
+  // send the response
+  res.status(statusCode).json({ stack, status, message });
+});
+
 // Listen to server
 const PORT = process.env.PORT || 9000;
 

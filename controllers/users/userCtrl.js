@@ -4,15 +4,13 @@ const generateToken = require('../../utils/generateToken');
 const getTokenFromHeader = require('../../utils/getTokenFromHeader');
 
 // Register
-const userRegisterCtrl = async (req, res) => {
+const userRegisterCtrl = async (req, res, next) => {
   const { firstName, lastName, profilePhoto, email, password } = req.body;
   try {
     // Check if email exist
     const userFound = await User.findOne({ email });
     if (userFound) {
-      return res.json({
-        msg: 'User Already Exist',
-      });
+      return next(new Error('User already registered'));
     }
 
     // hash password
@@ -33,7 +31,7 @@ const userRegisterCtrl = async (req, res) => {
       data: user,
     });
   } catch (error) {
-    res.json(error.message);
+    next(new Error(error.message));
   }
 };
 
@@ -127,9 +125,19 @@ const updateUserCtrl = async (req, res) => {
 };
 
 // Profile Photo Upload
-const profilePhotoUploadCtrl = async (req, res) => {
-  console.log(req.file);
+const profilePhotoUploadCtrl = async (req, res, next) => {
   try {
+    // 1.Find the user to be updated
+    const userToUpdate = await User.findById(req.userAuth);
+
+    // 2.Check if the user is found
+    if (!userToUpdate) {
+      return next();
+    }
+
+    // 3.Check if the user is blocked
+    // 4.Check if the user is updating their profile photo
+    // 5.Update profile photo
     res.json({
       status: 'success',
       data: 'Profile Photo Upload',
