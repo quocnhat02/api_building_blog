@@ -8,6 +8,7 @@ const {
   deleteUserCtrl,
   updateUserCtrl,
   profilePhotoUploadCtrl,
+  whoViewedMyProfileCtrl,
 } = require('../../controllers/users/userCtrl');
 const isLogin = require('../../middlewares/isLogin');
 const multer = require('multer');
@@ -34,6 +35,9 @@ userRouter.delete('/:id', deleteUserCtrl);
 
 // PUT/api/v1/users/:id
 userRouter.put('/:id', updateUserCtrl);
+
+// GET/api/v1/users/profile-viewers/:id
+userRouter.get('/profile-viewers/:id', isLogin, whoViewedMyProfileCtrl);
 
 // POST/api/v1/users/profile-photo-upload
 userRouter.post(
