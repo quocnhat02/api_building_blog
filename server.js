@@ -1,4 +1,5 @@
 const express = require('express');
+const globalErrorHandler = require('./middlewares/globalErrorHandler');
 const categoryRouter = require('./routes/categories/categoryRoutes');
 const commentRouter = require('./routes/comments/commentRoutes');
 const postRouter = require('./routes/posts/postRoutes');
@@ -12,21 +13,6 @@ const app = express();
 // middleware
 app.use(express.json()); // passing incoming payload
 app.use(express.urlencoded({ extended: true }));
-
-const userAuth = {
-  isLogin: true,
-  isAdmin: false,
-};
-
-app.use((req, res, next) => {
-  if (userAuth.isLogin) {
-    next();
-  } else {
-    return res.json({
-      msg: 'Invalid login Credentials',
-    });
-  }
-});
 
 // -------
 // routes
@@ -42,17 +28,7 @@ app.use('/api/v1/categories/', categoryRouter);
 // -------
 
 // Error handlers middleware
-app.use((err, req, res, next) => {
-  // status
-  // message
-  // stack
-  const stack = err.stack;
-  const message = err.message;
-  const status = err.status ? err.status : 'failed';
-  const statusCode = err?.statusCode ? err.statusCode : 500;
-  // send the response
-  res.status(statusCode).json({ stack, status, message });
-});
+app.use(globalErrorHandler);
 
 // Listen to server
 const PORT = process.env.PORT || 9000;
