@@ -289,7 +289,7 @@ const unblockUsersCtrl = async (req, res, next) => {
 // Admin-block
 const adminBlockUserCtrl = async (req, res, next) => {
   try {
-    // 1.Find the user to be unblocked
+    // 1.Find the user to be blocked
     const userToBeBlocked = await User.findById(req.params.id);
 
     // 2.Check if the user found
@@ -311,6 +311,37 @@ const adminBlockUserCtrl = async (req, res, next) => {
     res.json({
       status: 'success',
       data: 'You have successfully blocked the user',
+    });
+  } catch (error) {
+    res.json(error.message);
+  }
+};
+
+// Admin-unblock
+const adminUnblockUserCtrl = async (req, res, next) => {
+  try {
+    // 1.Find the user to be unblocked
+    const userToBeUnblocked = await User.findById(req.params.id);
+
+    // 2.Check if the user found
+    if (!userToBeUnblocked) {
+      return next(appErr('User not found'));
+    }
+
+    // 3.Check if the user has been blocked
+    if (!userToBeUnblocked.isBlocked) {
+      return next(appErr('User has not been blocked'));
+    }
+
+    // 4.Change the isBlocked to false
+    userToBeUnblocked.isBlocked = false;
+
+    // 5.save
+    await userToBeUnblocked.save();
+
+    res.json({
+      status: 'success',
+      data: 'You have successfully unblocked the user',
     });
   } catch (error) {
     res.json(error.message);
@@ -404,4 +435,5 @@ module.exports = {
   blockUsersCtrl,
   unblockUsersCtrl,
   adminBlockUserCtrl,
+  adminUnblockUserCtrl,
 };
