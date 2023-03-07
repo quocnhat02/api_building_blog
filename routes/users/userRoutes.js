@@ -17,6 +17,7 @@ const {
 } = require('../../controllers/users/userCtrl');
 const isLogin = require('../../middlewares/isLogin');
 const multer = require('multer');
+const isAdmin = require('../../middlewares/isAdmin');
 
 const userRouter = express.Router();
 
@@ -57,7 +58,7 @@ userRouter.get('/block/:id', isLogin, blockUsersCtrl);
 userRouter.get('/unblock/:id', isLogin, unblockUsersCtrl);
 
 // GET/api/v1/users/admin-block/:id
-userRouter.get('/admin-block/:id', isLogin, adminBlockUserCtrl);
+userRouter.put('/admin-block/:id', isLogin, isAdmin, adminBlockUserCtrl);
 
 // POST/api/v1/users/profile-photo-upload
 userRouter.post(

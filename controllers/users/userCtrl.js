@@ -297,10 +297,15 @@ const adminBlockUserCtrl = async (req, res, next) => {
       return next(appErr('User not found'));
     }
 
-    // 3.Change the isBlocked to true
+    // 3.Check if the user has been blocked
+    if (userToBeBlocked.isBlocked) {
+      return next(appErr('User has been blocked'));
+    }
+
+    // 4.Change the isBlocked to true
     userToBeBlocked.isBlocked = true;
 
-    // 4.save
+    // 5.save
     await userToBeBlocked.save();
 
     res.json({

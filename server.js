@@ -1,5 +1,6 @@
 const express = require('express');
 const globalErrorHandler = require('./middlewares/globalErrorHandler');
+const isAdmin = require('./middlewares/isAdmin');
 const categoryRouter = require('./routes/categories/categoryRoutes');
 const commentRouter = require('./routes/comments/commentRoutes');
 const postRouter = require('./routes/posts/postRoutes');
