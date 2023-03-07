@@ -248,6 +248,70 @@ const blockUsersCtrl = async (req, res, next) => {
   }
 };
 
+// unBlock
+const unblockUsersCtrl = async (req, res, next) => {
+  try {
+    // 1.Find the user to be unblocked
+    const userToBeUnBlocked = await User.findById(req.params.id);
+
+    // 2.Find the user who is unblocking
+    const userWhoUnBlocked = await User.findById(req.userAuth);
+
+    // 3.Check if userToBeUnBlocked and userWhoUnBlocked are found
+    if (userToBeUnBlocked && userWhoUnBlocked) {
+      // 4. Check if userToBeUnBlocked is already in the array's of userWhoUnBlocked
+      const isUserAlreadyBlocked = userWhoUnBlocked.blocked.find(
+        (blocked) => blocked.toString() === userToBeUnBlocked._id.toString()
+      );
+
+      if (!isUserAlreadyBlocked) {
+        return next(appErr('You have not blocked this user'));
+      }
+
+      // 5.Remove userToBeUnBlocked from userWhoUnBlocked's array
+      userWhoUnBlocked.blocked = userWhoUnBlocked.blocked.filter(
+        (blocked) => blocked.toString() !== userToBeUnBlocked._id.toString()
+      );
+
+      // 6.Save
+      await userWhoUnBlocked.save();
+
+      res.json({
+        status: 'success',
+        data: 'You have successfully unblocked this user',
+      });
+    }
+  } catch (error) {
+    res.json(error.message);
+  }
+};
+
+// Admin-block
+const adminBlockUserCtrl = async (req, res, next) => {
+  try {
+    // 1.Find the user to be unblocked
+    const userToBeBlocked = await User.findById(req.params.id);
+
+    // 2.Check if the user found
+    if (!userToBeBlocked) {
+      return next(appErr('User not found'));
+    }
+
+    // 3.Change the isBlocked to true
+    userToBeBlocked.isBlocked = true;
+
+    // 4.save
+    await userToBeBlocked.save();
+
+    res.json({
+      status: 'success',
+      data: 'You have successfully blocked the user',
+    });
+  } catch (error) {
+    res.json(error.message);
+  }
+};
+
 // All
 const getUsersCtrl = async (req, res) => {
   try {
@@ -333,4 +397,6 @@ module.exports = {
   followingCtrl,
   unFollowingCtrl,
   blockUsersCtrl,
+  unblockUsersCtrl,
+  adminBlockUserCtrl,
 };
