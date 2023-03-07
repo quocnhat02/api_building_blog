@@ -11,6 +11,7 @@ const {
   whoViewedMyProfileCtrl,
   followingCtrl,
   unFollowingCtrl,
+  blockUsersCtrl,
 } = require('../../controllers/users/userCtrl');
 const isLogin = require('../../middlewares/isLogin');
 const multer = require('multer');
@@ -46,6 +47,9 @@ userRouter.get('/following/:id', isLogin, followingCtrl);
 
 // GET/api/v1/users/unfollow/:id
 userRouter.get('/unfollowing/:id', isLogin, unFollowingCtrl);
+
+// GET/api/v1/users/block/:id
+userRouter.get('/block/:id', isLogin, blockUsersCtrl);
 
 // POST/api/v1/users/profile-photo-upload
 userRouter.post(

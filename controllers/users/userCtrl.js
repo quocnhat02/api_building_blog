@@ -212,6 +212,42 @@ const unFollowingCtrl = async (req, res, next) => {
   }
 };
 
+// block
+const blockUsersCtrl = async (req, res, next) => {
+  try {
+    // 1.Find the user to be blocked
+    const userToBeBlocked = await User.findById(req.params.id);
+
+    // 2.Find the user who is blocking
+    const userWhoBlocked = await User.findById(req.userAuth);
+
+    // 3.Check if the userToBeBlocked userWhoBlocked are found
+    if (userToBeBlocked && userWhoBlocked) {
+      // 4.Check if userWhoBlocked is already in the user's blocked array
+      const isUserAlreadyBlocked = userWhoBlocked.blocked.find(
+        (blocked) => blocked.toString() === userToBeBlocked._id.toString()
+      );
+
+      if (isUserAlreadyBlocked) {
+        return next(appErr('You already blocked this user'));
+      }
+
+      // 5.Push userToBeBlocked to the userWhoBlocked's blocked array
+      userWhoBlocked.blocked.push(userToBeBlocked._id);
+
+      // 6.save
+      await userWhoBlocked.save();
+
+      res.json({
+        status: 'success',
+        data: 'You have successfully blocked this user',
+      });
+    }
+  } catch (error) {
+    res.json(error.message);
+  }
+};
+
 // All
 const getUsersCtrl = async (req, res) => {
   try {
@@ -296,4 +332,5 @@ module.exports = {
   whoViewedMyProfileCtrl,
   followingCtrl,
   unFollowingCtrl,
+  blockUsersCtrl,
 };
