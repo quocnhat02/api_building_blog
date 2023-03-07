@@ -30,6 +30,11 @@ app.use('/api/v1/categories/', categoryRouter);
 // Error handlers middleware
 app.use(globalErrorHandler);
 
+// 404 error
+app.use('*', (req, res) => {
+  res.status(404).json({ message: `${req.originalUrl} - Route not found` });
+});
+
 // Listen to server
 const PORT = process.env.PORT || 9000;
 
