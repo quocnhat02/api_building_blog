@@ -45,9 +45,11 @@ const getCategoriesCtrl = async (req, res, next) => {
 // delete
 const deleteCategoryCtrl = async (req, res, next) => {
   try {
+    await Category.findByIdAndDelete(req.params.id);
+
     res.json({
       status: 'success',
-      data: 'delete category route',
+      data: 'Deleted successfully',
     });
   } catch (error) {
     next(appErr(error.message));

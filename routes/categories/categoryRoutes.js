@@ -20,7 +20,7 @@ categoryRouter.get('/:id', getCategoryCtrl);
 categoryRouter.get('/', getCategoriesCtrl);
 
 // DELETE/api/v1/categories/:id
-categoryRouter.delete('/:id', deleteCategoryCtrl);
+categoryRouter.delete('/:id', isLogin, deleteCategoryCtrl);
 
 // PUT/api/v1/categories/:id
 categoryRouter.put('/:id', isLogin, updateCategoryCtrl);
