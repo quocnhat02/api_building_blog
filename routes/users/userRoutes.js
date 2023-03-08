@@ -59,10 +59,13 @@ userRouter.get('/block/:id', isLogin, blockUsersCtrl);
 // GET/api/v1/users/unblock/:id
 userRouter.get('/unblock/:id', isLogin, unblockUsersCtrl);
 
-// GET/api/v1/users/admin-block/:id
+// PUT/api/v1/users/admin-block/:id
 userRouter.put('/admin-block/:id', isLogin, isAdmin, adminBlockUserCtrl);
 
-// GET/api/v1/users/admin-unblock/:id
+// PUT/api/v1/users/update-password
+userRouter.put('/update-password', isLogin, updatePasswordUserCtrl);
+
+// PUT/api/v1/users/admin-unblock/:id
 userRouter.put('/admin-unblock/:id', isLogin, isAdmin, adminUnblockUserCtrl);
 
 // POST/api/v1/users/profile-photo-upload

@@ -409,28 +409,29 @@ const updateUserCtrl = async (req, res, next) => {
 
 // Update password
 const updatePasswordUserCtrl = async (req, res, next) => {
-  const { email, firstName, lastName } = req.body;
+  const { password } = req.body;
   try {
-    // 1.Check if email is not taken
-    if (email) {
-      const emailTaken = await User.findOne({ email });
+    // check if user is updating the password
+    if (password) {
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(password, salt);
 
-      if (emailTaken) {
-        return next(appErr('Email is taken', 400));
-      }
+      // update user
+      await User.findByIdAndUpdate(
+        req.userAuth,
+        {
+          password: hashedPassword,
+        },
+        { new: true, runValidators: true }
+      );
+
+      res.json({
+        status: 'success',
+        data: 'Password has been updated successfully',
+      });
+    } else {
+      return next(appErr('Please provide password field'));
     }
-
-    // 2.Update the user
-    const user = await User.findByIdAndUpdate(req.userAuth, {
-      lastName,
-      firstName,
-      email,
-    });
-
-    res.json({
-      status: 'success',
-      data: 'update user route',
-    });
   } catch (error) {
     res.json(error.message);
   }
