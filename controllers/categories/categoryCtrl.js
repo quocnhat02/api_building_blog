@@ -16,12 +16,25 @@ const createCategoryCtrl = async (req, res, next) => {
   }
 };
 
-// get
+// single
 const getCategoryCtrl = async (req, res, next) => {
   try {
     res.json({
       status: 'success',
       data: 'Category route',
+    });
+  } catch (error) {
+    next(appErr(error.message));
+  }
+};
+
+// single
+const getCategoriesCtrl = async (req, res, next) => {
+  try {
+    const categories = await Category.find();
+    res.json({
+      status: 'success',
+      data: categories,
     });
   } catch (error) {
     next(appErr(error.message));
@@ -57,4 +70,5 @@ module.exports = {
   getCategoryCtrl,
   deleteCategoryCtrl,
   updateCategoryCtrl,
+  getCategoriesCtrl,
 };

@@ -4,6 +4,7 @@ const {
   getCategoryCtrl,
   deleteCategoryCtrl,
   updateCategoryCtrl,
+  getCategoriesCtrl,
 } = require('../../controllers/categories/categoryCtrl');
 const isLogin = require('../../middlewares/isLogin');
 
@@ -14,6 +15,9 @@ categoryRouter.post('/', isLogin, createCategoryCtrl);
 
 // GET/api/v1/categories/:id
 categoryRouter.get('/:id', getCategoryCtrl);
+
+// GET/api/v1/categories/
+categoryRouter.get('/', getCategoriesCtrl);
 
 // DELETE/api/v1/categories/:id
 categoryRouter.delete('/:id', deleteCategoryCtrl);
