@@ -157,6 +157,42 @@ userSchema.pre('findOne', async function (next) {
     }
   });
 
+  // ---------- Update userAward based on the number of posts ----------
+  // get the number of posts
+  const numberOfPosts = posts.length;
+  // check if the number of posts is less than 10
+  if (numberOfPosts < 10) {
+    await User.findByIdAndUpdate(
+      userId,
+      {
+        userAward: 'Bronze',
+      },
+      {
+        new: true,
+      }
+    );
+  }
+  // check if the number of posts is greater than 10
+  if (numberOfPosts > 10) {
+    await User.findByIdAndUpdate(
+      userId,
+      {
+        userAward: 'Silver',
+      },
+      { new: true }
+    );
+  }
+  // check if the number of posts is greater than 20
+  if (numberOfPosts > 20) {
+    await User.findByIdAndUpdate(
+      userId,
+      {
+        userAward: 'Gold',
+      },
+      { new: true }
+    );
+  }
+
   next();
 });
 // post-after saving
