@@ -19,16 +19,17 @@ const createCategoryCtrl = async (req, res, next) => {
 // single
 const getCategoryCtrl = async (req, res, next) => {
   try {
+    const category = await Category.findById(req.params.id);
     res.json({
       status: 'success',
-      data: 'Category route',
+      data: category,
     });
   } catch (error) {
     next(appErr(error.message));
   }
 };
 
-// single
+// all
 const getCategoriesCtrl = async (req, res, next) => {
   try {
     const categories = await Category.find();
