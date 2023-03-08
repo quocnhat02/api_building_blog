@@ -39,7 +39,7 @@ userRouter.get('/profile', isLogin, userProfileCtrl);
 userRouter.get('/', getUsersCtrl);
 
 // DELETE/api/v1/users/:id
-userRouter.delete('/:id', deleteUserCtrl);
+userRouter.delete('/:id', isLogin, deleteUserCtrl);
 
 // PUT/api/v1/users/:id
 userRouter.put('/', isLogin, updateUserCtrl);

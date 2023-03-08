@@ -1,5 +1,8 @@
 const bcrypt = require('bcryptjs');
+const Category = require('../../model/Category/Category');
+const Comment = require('../../model/Comment/Comment');
 const User = require('../../model/User/User');
+const Post = require('../../model/Post/Post');
 const { appErr, AppErr } = require('../../utils/appErr');
 const generateToken = require('../../utils/generateToken');
 const getTokenFromHeader = require('../../utils/getTokenFromHeader');
@@ -362,11 +365,31 @@ const getUsersCtrl = async (req, res) => {
 };
 
 // Delete
-const deleteUserCtrl = async (req, res) => {
+const deleteUserCtrl = async (req, res, next) => {
   try {
+    // 1.Find the user to be deleted
+    const userToBeDelete = await User.findById(req.userAuth);
+
+    if (!userToBeDelete) {
+      return next(appErr('User not found'));
+    }
+
+    // 2.Find all posts to be deleted
+    await Post.deleteMany({ user: req.userAuth });
+
+    // 3.Delete all comments of the user
+    await Comment.deleteMany({ user: req.userAuth });
+
+    // 4.Delete all categories of the user
+    await Category.deleteMany({ user: req.userAuth });
+
+    // 5.delete
+    await User.deleteOne({ user: userToBeDelete });
+
+    // send response
     res.json({
       status: 'success',
-      data: 'delete user route',
+      data: 'You have successfully deleted',
     });
   } catch (error) {
     res.json(error.message);
