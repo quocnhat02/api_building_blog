@@ -23,6 +23,6 @@ categoryRouter.get('/', getCategoriesCtrl);
 categoryRouter.delete('/:id', deleteCategoryCtrl);
 
 // PUT/api/v1/categories/:id
-categoryRouter.put('/:id', updateCategoryCtrl);
+categoryRouter.put('/:id', isLogin, updateCategoryCtrl);
 
 module.exports = categoryRouter;
