@@ -83,6 +83,8 @@ const userSchema = new mongoose.Schema(
 // Hooks
 // pre-before record is saved
 userSchema.pre('findOne', async function (next) {
+  // populate the post
+  this.populate('posts');
   // get the user id
   const userId = this._conditions._id;
   // find the post created by the user
