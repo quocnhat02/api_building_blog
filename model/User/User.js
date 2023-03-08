@@ -137,6 +137,26 @@ userSchema.pre('findOne', async function (next) {
     );
   }
 
+  // ----------Last Active Date ----------
+
+  // convert to days ago, for example 1 day ago
+  const daysAgo = Math.floor(differenceDays);
+  // add virtual lastActive in days to the schema
+  userSchema.virtual('lastActive').get(function () {
+    // check if daysAgo is less than 0
+    if (daysAgo <= 0) {
+      return 'Today';
+    }
+    // check if daysAgo is equal to 1
+    if (daysAgo === 1) {
+      return 'Yesterday';
+    }
+    // check if daysAgo is greater than 1
+    if (daysAgo > 1) {
+      return `${daysAgo} days ago`;
+    }
+  });
+
   next();
 });
 // post-after saving
