@@ -2,7 +2,7 @@ const Post = require('../../model/Post/Post');
 const User = require('../../model/User/User');
 
 // Create post
-const createPostCtrl = async (req, res) => {
+const createPostCtrl = async (req, res, next) => {
   const { title, description } = req.body;
   try {
     // 1.Find the user
@@ -26,51 +26,51 @@ const createPostCtrl = async (req, res) => {
       data: postCreated,
     });
   } catch (error) {
-    res.json(error.message);
+    return next(appErr(error.message));
   }
 };
 
-const getPostCtrl = async (req, res) => {
+const getPostCtrl = async (req, res, next) => {
   try {
     res.json({
       status: 'success',
       data: 'Post route',
     });
   } catch (error) {
-    res.json(error.message);
+    return next(appErr(error.message));
   }
 };
 
-const getPostsCtrl = async (req, res) => {
+const getPostsCtrl = async (req, res, next) => {
   try {
     res.json({
       status: 'success',
       data: 'Posts route',
     });
   } catch (error) {
-    res.json(error.message);
+    return next(appErr(error.message));
   }
 };
 
-const deletePostCtrl = async (req, res) => {
+const deletePostCtrl = async (req, res, next) => {
   try {
     res.json({
       status: 'success',
       data: 'delete post route',
     });
   } catch (error) {
-    res.json(error.message);
+    return next(appErr(error.message));
   }
 };
 
-const updatePostCtrl = async (req, res) => {
+const updatePostCtrl = async (req, res, next) => {
   try {
     res.json({
       status: 'success',
       data: 'update post route',
     });
   } catch (error) {
-    res.json(error.message);
+    return next(appErr(error.message));
   }
 };
 
