@@ -373,8 +373,60 @@ const deleteUserCtrl = async (req, res) => {
   }
 };
 
-const updateUserCtrl = async (req, res) => {
+// Update
+const updateUserCtrl = async (req, res, next) => {
+  const { email, firstName, lastName } = req.body;
   try {
+    // 1.Check if email is not taken
+    if (email) {
+      const emailTaken = await User.findOne({ email });
+
+      if (emailTaken) {
+        return next(appErr('Email is taken', 400));
+      }
+    }
+
+    // 2.Update the user
+    const user = await User.findByIdAndUpdate(
+      req.userAuth,
+      {
+        lastName,
+        firstName,
+        email,
+      },
+      { new: true, runValidators: true }
+    );
+
+    // 3.Send response
+    res.json({
+      status: 'success',
+      data: user,
+    });
+  } catch (error) {
+    res.json(error.message);
+  }
+};
+
+// Update password
+const updatePasswordUserCtrl = async (req, res, next) => {
+  const { email, firstName, lastName } = req.body;
+  try {
+    // 1.Check if email is not taken
+    if (email) {
+      const emailTaken = await User.findOne({ email });
+
+      if (emailTaken) {
+        return next(appErr('Email is taken', 400));
+      }
+    }
+
+    // 2.Update the user
+    const user = await User.findByIdAndUpdate(req.userAuth, {
+      lastName,
+      firstName,
+      email,
+    });
+
     res.json({
       status: 'success',
       data: 'update user route',
@@ -437,4 +489,5 @@ module.exports = {
   unblockUsersCtrl,
   adminBlockUserCtrl,
   adminUnblockUserCtrl,
+  updatePasswordUserCtrl,
 };

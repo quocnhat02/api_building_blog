@@ -92,7 +92,7 @@ userSchema.pre('findOne', async function (next) {
   // get the last post created by the user
   const lastPostCreated = posts[posts.length - 1];
   // get the last post date
-  const lastPostDate = new Date(lastPostCreated.createdAt);
+  const lastPostDate = new Date(lastPostCreated?.createdAt);
   // get the last post date in string format
   const lastPostDateString = lastPostDate.toDateString();
   // add virtual to the schema
